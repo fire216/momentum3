@@ -5,7 +5,20 @@ const toDoForm = document.querySelector(".js-toDoForm"),
     const TODOS_LS = "toDos";
 
     //할 일 항목이 많아질 수 있기 때문에 array로 만듬
-    const toDos = [];
+    let toDos = [];
+   
+    function deleteToDo(event) {
+                          //button을 뜨게 만드는 것
+        const btn = event.target;
+        const li = btn.parentNode;
+        toDoList.removeChild(li);//filter가 하는 일 array를 하나 만들거임
+        const cleanToDos = toDos.filter(function(toDo){
+                                //String을 숫자로 바꾸기 위해서
+            return toDo.id !== parseInt(li.id);
+        });
+        toDos = cleanToDos
+        saveToDos();
+    }
 
     function saveToDos() {              //object를 string으로 바꿔주기위해
         localStorage.setItem(TODOS_LS, JSON.stringify(toDos));
@@ -17,6 +30,7 @@ const toDoForm = document.querySelector(".js-toDoForm"),
         const span = document.createElement("span");
         const newId = toDos.length + 1;
         delBtn.innerText = "❌";
+        delBtn.addEventListener("click", deleteToDo);
         span.innerText = text
         //뭔가를 father element 안에 넣는 것
         li.appendChild(span);
